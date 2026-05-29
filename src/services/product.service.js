@@ -1,15 +1,40 @@
-const ApiError = require('../utils/apiError')
+const ApiError = require("../utils/apiError");
 
-const getAllProductsService = (data)=>{
-    const products = await productModel.find()
+const createProductService = async (data) => {
+  const { name, description, priceAmount, priceCurrency, category } = data;
+  const price = {
+    amount: Number(priceAmount),
+    currency: priceCurrency,
+  };
+  if (!name || !description || !category || !priceAmount || !priceCurrency) {
+    throw new ApiError(200, "all fields are required");
+  }
 
-   if(!products){
-    throw new ApiError(200 , "products not found")
-   }
+  const product = await productModel.create({
+    name,
+    description,
+    category,
+    price: {
+      amount: Number(priceAmount),
+      currency: priceCurrency,
+    },
+  });
 
-   return products
+  return product
 }
+
+
+const getAllProductsService = async (data) => {
+  const products = await productModel.find();
+
+  if (!products) {
+    throw new ApiError(200, "products not found");
+  }
+
+  return products;
+};
 
 module.exports = {
-    getAllProductsService
-}
+  getAllProductsService,
+  createProductService
+};

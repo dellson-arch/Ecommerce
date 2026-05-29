@@ -19,6 +19,14 @@ const ProductSchema = new mongoose.Schema({
       enum: ["INR", "USD"],
     },
   },
+  category :{
+    type : String,
+  },
+  images : [
+    {
+      type : String
+    }
+  ]
 });
 
 
